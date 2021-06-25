@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="WF Test Suite" verbose="0" parallel = "tests">
+    <test name="WF Tests" parallel="instances"
+		preserve-order="true" data-provider-thread-count="5" thread-count="5">
+        <classes>
+            <class name="com.wf.BaseTestRunner" />
+        </classes>
+    </test>
+</suite>

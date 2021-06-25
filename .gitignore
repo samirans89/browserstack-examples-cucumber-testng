@@ -10,8 +10,13 @@ build
 .classpath
 *.project
 *.jar
-*.properties
 *.prefs
 *.DS_Store*
 .DS_Store
 .project
+.allure
+allure-results
+bin
+.vscode
+.factorypath
+*.log

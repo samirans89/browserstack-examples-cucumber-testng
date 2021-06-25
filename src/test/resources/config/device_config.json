@@ -1,0 +1,122 @@
+{
+  "user": "BROWSERSTACK_USERNAME",
+  "key": "BROWSERSTACK_ACCESS_KEY",
+  "tests": {
+    "qa_regession": {
+      "common_caps": {
+        "project": "WF App Demo",
+        "app": "WF_App",
+        "browserstack.debug": "true",
+        "browserstack.networkLogs": "true",
+        "browserstack.console": "verbose",
+        "browserstack.local": "true",
+        "browserstack.maskCommands": "setValues, getValues, setCookies, getCookies"
+      },
+      "env_caps": [
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Samsung Galaxy S21 Ultra",
+          "realMobile": true
+        },
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Samsung Galaxy S21",
+          "realMobile": true
+        },
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Google Pixel 5",
+          "realMobile": true
+        },
+        {
+          "os": "android",
+          "os_version": "10.0",
+          "device": "Google Pixel 4 XL",
+          "realMobile": true
+        },
+        {
+          "os": "android",
+          "os_version": "10.0",
+          "device": "OnePlus 8",
+          "realMobile": true
+        }
+      ],
+      "local_binding_caps": {
+        "force": "true",
+        "forceLocal": "true",
+        "verbose": "true",
+        "logFile": "local_test.log"
+      }
+    },
+    "qa_functional": {
+      "common_caps": {
+        "project": "WF App Demo",
+        "app": "WF_App",
+        "browserstack.debug": "true",
+        "browserstack.networkLogs": "true",
+        "browserstack.console": "verbose",
+        "browserstack.local": "true",
+        "browserstack.maskCommands": "setValues, getValues, setCookies, getCookies"
+      },
+      "env_caps": [
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Samsung Galaxy S21 Ultra",
+          "realMobile": true
+        }
+      ],
+      "local_binding_caps": {
+        "force": "true",
+        "forceLocal": "true",
+        "verbose": "true",
+        "logFile": "local_test.log"
+      }
+    },
+    "prod_smoke": {
+      "common_caps": {
+        "project": "WF App Demo",
+        "app": "WikipediaSample",
+        "browserstack.debug": "true",
+        "browserstack.networkLogs": "true",
+        "browserstack.console": "verbose",
+        "browserstack.maskCommands": "setValues, getValues, setCookies, getCookies"
+      },
+      "env_caps": [
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Samsung Galaxy S21 Ultra",
+          "realMobile": true
+        },
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Google Pixel 5",
+          "realMobile": true
+        }
+      ]
+    },
+    "uat_critical": {
+      "common_caps": {
+        "project": "WF App Demo",
+        "app": "WF_App",
+        "browserstack.debug": "true",
+        "browserstack.networkLogs": "true",
+        "browserstack.console": "verbose",
+        "browserstack.maskCommands": "setValues, getValues, setCookies, getCookies"
+      },
+      "env_caps": [
+        {
+          "os": "android",
+          "os_version": "11.0",
+          "device": "Samsung Galaxy S21 Ultra",
+          "realMobile": true
+        }
+      ]
+    }
+  }
+}

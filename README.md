@@ -6,254 +6,52 @@
 
 TestNG is a testing framework designed to simplify a broad range of testing needs, from unit testing (testing a class in isolation of the others) to integration testing (testing entire systems made of several classes, several packages and even several external frameworks, such as application servers). Cucumber is a software tool that supports behavior-driven development (BDD).
 
-This BrowserStack Example repository demonstrates a Selenium test framework written in Cucumber and TestNG with parallel testing capabilties. The Selenium test scripts are written for the open source [BrowserStack Demo web application](https://bstackdemo.com) ([Github](https://github.com/browserstack/browserstack-demo-app)). This BrowserStack Demo App is an e-commerce web application which showcases multiple real-world user scenarios, written in Next and React. The app is bundled with offers data, orders data and products data that contains everything you need to start using the app and run tests out-of-the-box.
-
-The Selenium tests are run on different platforms like on-prem, docker and BrowserStack using various run configurations and test capabilities.
-
-
-
 ---
 
 ## Repository setup
 
-- Clone the repository
-
-- For this infrastructure configuration (i.e on-premise) ensure that the ChromeDriver executable is placed in the `/src/test/resources/` folder.
+- Clone the repository, switch to branch 'wf_app'
 
 - Ensure you have the following dependencies installed on the machine
+
   - Java >= 8
   - Maven >= 3.1+
-  - Gradle >= 5.0+
 
   Maven:
-    ```sh
-    mvn install
-    ```
 
-  Gradle:
-    ```sh
-    gradle build
-    ```
+  ```sh
+  mvn install -DskipTests
+  ```
 
 ## About the tests in this repository
 
-This repository contains the following Selenium tests:
+This repository contains the following Appium profiles:
 
-| Module   | Test name                          | Description |
-  | ---   | ---                                   | --- |
-| E2E      | End to End Scenario                | This test scenario verifies successful product purchase lifecycle end-to-end. It demonstrates the [Page Object Model design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium) and is also the default test executed in all the single test run profiles. |
-| Login    | Login with given username          | This test verifies the login workflow with different types of valid login users. |
-| Login    | Login as Locked User               | This test verifies the login workflow error for a locked user. |
-| Offers   | Offers for Mumbai location     | This test mocks the GPS location for Mumbai and verifies that the product offers applicable for the Mumbai location are shown.   |
-| Product  | Apply Apple Vendor Filter          | This test verifies that 9 Apple products are only shown if the Apple vendor filter option is applied. |
-| Product  | Apply Lowest to Highest Order By   | This test verifies that the product prices are in ascending order when the product sort "Lowest to Highest" is applied. |
-| User     | Login as User with no image loaded | This test verifies that the product images load for user: "image_not_loading_user" on the e-commerce application. Since the images do not load, the test case assertion fails.|
-| User     | Login as User with existing Orders |  This test verifies that existing orders are shown for user: "existing_orders_user"  |
-  
+| Profiles      | Description                                                                                                                                                                        |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| prod_smoke    | Runs Cucumber test scenarios with tags: @prod and @smoke. This profile will download the app from Google PlayStore and hence, a Google account is needed for running this profile. |
+| qa_regression | Runs Cucumber test scenarios with tags: @qa and @regression. This profile activates BrowserStack Local testing considering an internal QA environment.                             |
+| qa_functional | Runs Cucumber test scenarios with tags: @qa and @functional. This profile activates BrowserStack Local testing considering an internal QA environment.                             |
+| uat_critical  | Runs Cucumber test scenarios with tags: @uat and @critical.                                                                                                                        |
+
 ---
-
 
 ## Test infrastructure environments
 
-- [On-premise/self-hosted](#on-premise-self-hosted)
-- [Docker](#docker)
 - [BrowserStack](#browserstack)
-
 
 ## Configuring the maximum parallel test threads for this repository
 
-For all the parallel run configuration profiles, you can configure the maximum parallel test threads by changing the settings below.
-
-- Docker
-
-  [docker-compose.yml](docker-compose.yml)
-  
-  NODE_MAX_INSTANCES = 5
-  GRID_MAX_SESSION = 5
- 
-
 - BrowserStack
 
-  - Maven:
-
-    [pom.xml](pom.xml)
-
-    parallel-count = 5
-
+  [testng_runner.xml](src/test/resources/conf/testng_runner.xml)
+  Defaults:
+  thread-count = 5
+  data-provider-thread-count = 5
 
 ## Test Reporting
 
 - [Allure reports](#generating-allure-reports)
-
----
-
-# On Premise / Self Hosted
-
-This infrastructure points to running the tests on your own machine using a browser (e.g. Chrome) using the browser's driver executables (e.g. ChromeDriver for Chrome). Selenium enables this functionality using WebDriver for many popular browsers.
-
-## Prerequisites
-
-- For this infrastructure configuration (i.e on-premise) ensure that the ChromeDriver executable is placed in the `/src/test/resources/` folder.
-
-Note: The ChromeDriver version must match the Chrome browser version on your machine.
-
-## Running Your Tests
-
-### Run a specific test on your own machine
-
-- How to run the test?
-
-  To run the default test scenario (e.g. End to End Scenario) on your own machine, use the following command:
-
-  Maven:
-    ```sh
-  mvn test -P on-prem
-  ```
-
-  Gradle:
-    ```sh 
-  gradle on-prem
-  ```
-
-  To run a specific test scenario, use the following command with the additional 'test-name' argument:
-
-  Maven:
-  ```sh
-  mvn test -P on-prem -Dtest-name="<Test scenario name>"
-  ```
-
-  Gradle:
-  ```sh
-  gradle on-prem -Dtest-name="<Test scenario name>"
-  ```
-
-  where,  the argument 'test-name' can be any Cucumber scenario name configured in this repository.
-
-  E.g. "Login as username", "Login as Locked User", "Offers for mumbai geo-location" or any of the other test scenario names, as outlined in [About the tests in this repository](#About-the-tests-in-this-repository) section.
-
-- Output
-
-  This run profile executes a specific test scenario on a single browser instance on your own machine.
-
-
-### Run the entire test suite on your own machine
-
-- How to run the test?
-
-  To run the entire test suite on your own machine, use the following command:
-
-  Maven:
-  ```sh
-  mvn test -P on-prem-suite
-  ```
-
-  Gradle:
-  ```sh
-  gradle on-prem-suite
-  ```
-
-- Output
-
-  This run profile executes the entire test suite sequentially on a single browser, on your own machine.
-
-  
----
-
-# Docker
-
-[Docker](https://docs.docker.com/get-started/overview/) is an open source platform that provides the ability to package and test applications in an isolated environment called containers.
-
-## Prerequisites
-
-- Install and start [Docker](https://docs.docker.com/get-docker/).
-- Note: Docker should be running on the test machine. Ensure Docker Compose is installed as well.
-- Run `docker-compose pull` from the current directory of the repository.
-
-## Running Your Tests
-
-### Run a specific test on the docker infrastructure
-
-- How to run the test?
-
-  - Start the Docker by running the following command:
-
-  ```sh
-  docker-compose up -d
-  ```
-
-  - To run the default test scenario (e.g. End to End Scenario) on your own machine, use the following command:
-
-  Maven:
-  ```sh
-  mvn test -P docker
-  ```
-
-  Gradle:
-    ```sh
-  gradle docker
-  ```
-
-  To run a specific test scenario, use the following command with the additional 'test-name' argument:
-
-  Maven:
-  ```sh
-  mvn test -P docker -Dtest-name="<Test scenario name>"
-  ```
-
-  Gradle:
-  ```sh
-  gradle docker -Dtest-name="<Test scenario name>"
-  ```
-
-  where,  the argument 'test-name' can be any Cucumber scenario name configured in this repository.
-
-  E.g. "Login as username", "Login as Locked User", "Offers for mumbai geo-location" or any of the other test scenario names, as outlined in [About the tests in this repository](#About-the-tests-in-this-repository) section.
-
-
-- After tests are complete, you can stop the Docker by running the following command:
-
-  ```sh
-  docker-compose down
-  ```
-
-- Output
-
-  This run profile executes a specific test scenario on a single browser deployed on a docker image.
-
-
-### Run the entire test suite in parallel using Docker
-
-- How to run the test?
-
-  - Start the docker image first by running the following command:
-
-  ```sh
-  docker-compose up -d
-  ```
-
-  - To run the entire test suite in parallel on the docker image, use the following command:
-
-  Maven:
-  ```sh
-  mvn test -P docker-parallel
-  ```
-
-  Gradle:
-  ```sh
-  gradle docker-parallel
-  ```
-
-  - After the tests are complete stop the Selenium grid by running the following command:
-
-  ```sh
-  docker-compose down
-  ```
-
-- Output
-
-  This run profile executes the entire test suite in parallel on a single browser, deployed on a docker image.
-
-- Note: By default, this execution would run maximum 5 test threads in parallel on Docker. Refer to the section ["Configuring the maximum parallel test threads for this repository"](#Configuring-the-maximum-parallel-test-threads-for-this-repository) for updating the parallel thread count based on your requirements.
 
 ---
 
@@ -280,215 +78,103 @@ Note: The ChromeDriver version must match the Chrome browser version on your mac
   set BROWSERSTACK_ACCESS_KEY=<browserstack-access-key>
   ```
 
-  Alternatively, you can also hardcode username and access_key objects in the [bs.json](resources/config/bs.json) file.
+  Alternatively, you can also hardcode username and access_key objects in the [device_config.json](src/test/resources/config/device_config.json) file.
 
 Note:
-- We have configured a list of test capabilities in the [bs.json](resources/config/bs.json) file. You can certainly update them based on your device / browser test requirements.
+
+- We have configured a list of test capabilities in the [device_config.json](src/test/resources/config/device_config.json) file. You can certainly update them based on your device / browser test requirements.
 - The exact test capability values can be easily identified using the [Browserstack Capability Generator](https://browserstack.com/automate/capabilities)
 
+## BrowserStack App Upload
+
+- Upload your app on BrowserStack using cUrl or a REST Client.
+
+  cUrl Example:
+
+  ```sh
+    curl -u $BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY \
+    -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+    -F "file=@<DIR_PATH>/browserstack-examples-cucumber-testng/app/wf_app.apk" \
+    -F "custom_id=WF_App"
+  ```
+
+  where, <DIR_PATH> = Directory path to the repossitory on the machine.
+
+  Note: For the 'prod_smoke' test profile, the app will be downloaded from the Google PlayStore. In this case, we can upload any sample app for starting the app automate test session, except for the same app id which would be downloaded from the Google PlayStore.
+
+  cURL for Sample app:
+
+  ```sh
+    curl -u $BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY \
+    -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+    -F "url=https://www.browserstack.com/app-automate/sample-apps/android/WikipediaSample.apk"
+    -F "custom_id=WikipediaSample"
+  ```
 
 ## Running Your Tests
 
-### Run a specific test on BrowserStack
+### Run different test profiles on BrowserStack
 
-In this section, we will run a single test on Chrome browser on Browserstack. To change test capabilities for this configuration, please refer to the `single` object in `bs.json` file.
+- How to run a test profile?
 
-- How to run the test?
-
-  - To run the default test scenario (e.g. End to End Scenario) on your own machine, use the following command:
+  1. Regression tests on QA.
 
   Maven:
+
   ```sh
-  mvn test -P bstack-single
+  mvn clean test -P qa_regression
   ```
 
-  Gradle:
-    ```sh
-  gradle bstack-single
-  ```
+  Note: This profile activates BrowserStack Local testing considering an internal QA environment.
 
-  To run a specific test scenario, use the following command with the additional 'test-name' argument:
-  Maven:
-  ```sh
-  mvn test -P bstack-single -Dtest-name="<Test scenario name>"
-  ```
-
-  Gradle:
-  ```sh
-  gradle bstack-single -Dtest-name="<Test scenario name>"
-  ```
-
-  where,  the argument 'test-name' can be any Cucumber scenario name configured in this repository.
-
-  E.g. "Login as username", "Login as Locked User", "Offers for mumbai geo-location" or any of the other test scenario names, as outlined in [About the tests in this repository](#About-the-tests-in-this-repository) section.
-
-
-- Output
-
-  This run profile executes a single test on a single browser on BrowserStack. Please refer to your [BrowserStack dashboard](https://automate.browserstack.com/) for test results.
-
-
-### Run the entire test suite in parallel on a single BrowserStack browser
-
-In this section, we will run the tests in parallel on a single browser on Browserstack. Refer to `single` object in `bs.json` file to change test capabilities for this configuration.
-
-- How to run the test?
-
-  To run the entire test suite in parallel on a single BrowserStack browser, use the following command:
+  2. Smoke tests on Prod.
 
   Maven:
+
   ```sh
-  mvn test -P bstack-parallel
-  ```
-  Gradle:
-    ```sh
-  gradle bstack-parallel
+  GOOGLE_USERNAME=<YOUR_GMAIL_ID> GOOGLE_PASSWORD=<YOUR_GOOGLE_PASSWORD> mvn clean test -P prod_smoke
   ```
 
+  Note: This profile will download the app from Google PlayStore and hence, a Google account is needed for running this profile.
 
-- Output
-
-  This run profile executes the entire test suite in parallel on a single BrowserStack browser. Please refer to your [BrowserStack dashboard](https://automate.browserstack.com/) for test results.
-
-  - Note: By default, this execution would run maximum 5 test threads in parallel on BrowserStack. Refer to the section ["Configuring the maximum parallel test threads for this repository"](#Configuring-the-maximum-parallel-test-threads-for-this-repository) for updating the parallel thread count based on your requirements.
-
-
-### Run the entire test suite in parallel on multiple BrowserStack browsers
-
-In this section, we will run the tests in parallel on multiple browsers on Browserstack. Refer to the `parallel` object in `bs.json` file to change test capabilities for this configuration.
-
-- How to run the test?
-
-  To run the entire test suite in parallel on multiple BrowserStack browsers, use the following command:
+  3. Functional tests on QA.
 
   Maven:
+
   ```sh
-  mvn test -P bstack-parallel-browsers
+  mvn clean test -P qa_functional
   ```
 
-  Gradle:
-  ```sh
-  gradle bstack-parallel-browsers
-  ```
+  Note: This profile activates BrowserStack Local testing considering an internal QA environment.
 
-### [Web application hosted on internal environment] Running your tests on BrowserStack using BrowserStackLocal
-
-#### Prerequisites
-
-- Clone the [BrowserStack demo application](https://github.com/browserstack/browserstack-demo-app) repository.
-  ```sh
-  git clone https://github.com/browserstack/browserstack-demo-app
-  ``` 
-- Please follow the README.md on the BrowserStack demo application repository to install and start the dev server on localhost.
-- In this section, we will run a single test case to test the BrowserStack Demo app hosted on your local machine i.e. localhost. Refer to the `single_local` object in `bs.json` file to change test capabilities for this configuration.
-- Note: You may need to provide additional BrowserStackLocal arguments to successfully connect your localhost environment with BrowserStack infrastructure. (e.g if you are behind firewalls, proxy or VPN).
-- Further details for successfully creating a BrowserStackLocal connection can be found here:
-
-  - [Local Testing with Automate](https://www.browserstack.com/local-testing/automate)
-  - [BrowserStackLocal Java GitHub](https://github.com/browserstack/browserstack-local-java)
-
-
-### [Web application hosted on internal environment] Run a specific test on BrowserStack using BrowserStackLocal
-
-- How to run the test?
-
-  - To run the default test scenario (e.g. End to End Scenario) on a single BrowserStack browser using BrowserStackLocal, use the following command:
+  4. Critical tests on UAT.
 
   Maven:
+
   ```sh
-  mvn test -P bstack-local
+  mvn clean test -P uat_critical
   ```
 
-  Gradle:
-    ```sh
-  gradle bstack-local
-  ```
+  These run profiles execute parallel tests on BrowserStack, as per the configurations and relevant cucumber tags in the feature files. Please refer to your [BrowserStack dashboard](https://app-automate.browserstack.com/) for test results.
 
-  To run a specific test scenario, use the following command with the additional test-name argument:
-  Maven:
-  ```sh
-  mvn test -P bstack-local -Dtest-name="<Test scenario name>"
-  ```
-
-  Gradle:
-  ```sh
-  gradle bstack-local -Dtest-name="<Test scenario name>"
-  ```
-
-  where,  the argument 'test-name' can be any Cucumber scenario name configured in this repository.
-
-  E.g. "Login as username", "Login as Locked User", "Offers for mumbai geo-location" or any of the other test scenario names, as outlined in [About the tests in this repository](#About-the-tests-in-this-repository) section.
-
-
-- Output
-
-  This run profile executes a single test on an internally hosted web application on a single browser on BrowserStack. Please refer to your BrowserStack dashboard(https://automate.browserstack.com/) for test results.
-
-
-### [Web application hosted on internal environment] Run the entire test suite in parallel on a single BrowserStack browser using BrowserStackLocal
-
-In this section, we will run the test cases to test the internally hosted website in parallel on a single browser on Browserstack. Refer to the `single_local` object in `bs.json` file to change test capabilities for this configuration.
-
-- How to run the test?
-
-  To run the entire test suite in parallel on a single BrowserStack browser using BrowserStackLocal, use the following command:
-  Maven:
-  ```sh
-  mvn test -P bstack-local-parallel
-  ```
-
-  Gradle:
-  ```sh
-  gradle bstack-local-parallel
-  ```
-
-- Output
-
-  This run profile executes the entire test suite on an internally hosted web application on a single browser on BrowserStack. Please refer to your [BrowserStack dashboard](https://automate.browserstack.com/) for test results.
-
-- Note: By default, this execution would run maximum 5 test threads in parallel on BrowserStack. Refer to the section ["Configuring the maximum parallel test threads for this repository"](#Configuring-the-maximum-parallel-test-threads-for-this-repository) for updating the parallel thread count based on your requirements.
-
-### [Web application hosted on internal environment] Run the entire test suite in parallel on multiple BrowserStack browser using BrowserStackLocal
-
-In this section, we will run the test cases to test the internally hosted website in parallel on multiple browsers on Browserstack. Refer to the `parallel_local` object in `bs.json` file to change test capabilities for this configuration.
-
-- How to run the test?
-
-  To run the entire test suite in parallel on a single BrowserStack browser using BrowserStackLocal, use the following command:
-
-  Maven:
-  ```sh
-  mvn test -P bstack-local-parallel-browsers
-  ```
-
-  Gradle:
-    ```sh
-  gradle bstack-local-parallel-browsers
-  ```
-
-- Output
-
-  This run profile executes the entire test suite on an internally hosted web application on multiple browsers on BrowserStack. Please refer to your [BrowserStack dashboard](https://automate.browserstack.com/) for test results.
-
-- Note: By default, this execution would run maximum 5 test threads in parallel on BrowserStack. Refer to the section ["Configuring the maximum parallel test threads for this repository"](#Configuring-the-maximum-parallel-test-threads-for-this-repository) for updating the parallel thread count based on your requirements.
+- Note: By default, this execution would run maximum 10 test threads in parallel on BrowserStack. Refer to the section ["Configuring the maximum parallel test threads for this repository"](#Configuring-the-maximum-parallel-test-threads-for-this-repository) for updating the parallel thread count based on your requirements.
 
 ## Generating Allure Reports
 
-  In this section, we will generate and serve allure reports for maven test runs.
+In this section, we will generate and serve allure reports for maven test runs.
 
 - Generate Report using the following command: `mvn io.qameta.allure:allure-maven:report`
 - Serve the Allure report on a server: `mvn io.qameta.allure:allure-maven:serve`
 
 ## Additional Resources
 
-- View your test results on the [BrowserStack Automate dashboard](https://www.browserstack.com/automate)
-- Documentation for writing [Automate test scripts in Java](https://www.browserstack.com/automate/java)
-- Customizing your tests capabilities on BrowserStack using our [test capability generator](https://www.browserstack.com/automate/capabilities)
-- [List of Browsers & mobile devices](https://www.browserstack.com/list-of-browsers-and-platforms?product=automate) for automation testing on BrowserStack
-- [Using Automate REST API](https://www.browserstack.com/automate/rest-api) to access information about your tests via the command-line interface
-- Understand how many parallel sessions you need by using our [Parallel Test Calculator](https://www.browserstack.com/automate/parallel-calculator?ref=github)
+- View your test results on the [BrowserStack App Automate dashboard](https://www.browserstack.com/app-automate)
+- Documentation for writing [App Automate test scripts in Java](https://www.browserstack.com/docs/app-automate/appium/getting-started/java)
+- Customizing your tests capabilities on BrowserStack using our [test capability generator](https://www.browserstack.com/app-automate/capabilities)
+- [List of Browsers & mobile devices](https://www.browserstack.com/list-of-browsers-and-platforms?product=app-automate) for native app automation testing on BrowserStack
+- [Using App Automate REST API](https://www.browserstack.com/app-automate/rest-api) to access information about your tests via the command-line interface
 - For testing public web applications behind IP restriction, [Inbound IP Whitelisting](https://www.browserstack.com/local-testing/inbound-ip-whitelisting) can be enabled with the [BrowserStack Enterprise](https://www.browserstack.com/enterprise) offering
 
-
 ## Open Issues
-- Parallel thread count is not working via gradle command line arguments & gradle profiles , the thread count can be updated directly from the testng runner file
+
+- N/A
