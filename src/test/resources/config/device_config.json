@@ -2,7 +2,7 @@
   "user": "BROWSERSTACK_USERNAME",
   "key": "BROWSERSTACK_ACCESS_KEY",
   "tests": {
-    "qa_regession": {
+    "qa_regression": {
       "common_caps": {
         "project": "WF App Demo",
         "app": "WF_App",
