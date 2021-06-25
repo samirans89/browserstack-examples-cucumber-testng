@@ -70,6 +70,7 @@ public class BaseTestRunner {
                 for (Object env : envArr) {
                     DesiredCapabilities capabilities = new DesiredCapabilities();
                     capabilities.merge(new DesiredCapabilities(Utility.getCapabiltiesMapFromJSONObj(configFileJSONObj,
+                    
                             "tests", testConfig, "common_caps")));
 
                     Map<String, String> localCapabilities = Utility.getCapabiltiesMapFromJSONObj(configFileJSONObj,

@@ -12,22 +12,16 @@
         <appium-java-client.version>7.5.1</appium-java-client.version>
         <browserstack-local-java.version>1.0.6</browserstack-local-java.version>
         <json-simple.version>1.1.1</json-simple.version>
-        <comslang.version>3.11</comslang.version>
         <allure-cucumber6-jvm.version>2.14.0</allure-cucumber6-jvm.version>
         <allure.version>2.10.0</allure.version>
         <slf4j.version>1.7.30</slf4j.version>
         <cucumber.version>6.10.4</cucumber.version>
-        <logback.version>1.2.3</logback.version>
         <testng.version>7.4.0</testng.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <poi-ooxml.version>5.0.0</poi-ooxml.version>
-        <poi.version>4.1.2</poi.version>
         <cucumber-java.version>6.10.4</cucumber-java.version>
         <cucumber-core.version>6.10.4</cucumber-core.version>
         <cucumber-jvm.version>6.10.4</cucumber-jvm.version>
-        <cucumber-picocontainer.version>6.10.4</cucumber-picocontainer.version>
         <cucumber-testng.version>6.10.4</cucumber-testng.version>
-        <parallel-count>5</parallel-count>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
     <dependencies>
