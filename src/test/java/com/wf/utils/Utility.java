@@ -46,7 +46,6 @@ public class Utility {
 				"browserstack_executor: {\"action\": \"setSessionName\", \"arguments\": {\"name\": \"%s\"}}", name));
 	}
 
-
 	public static JSONObject parseJSONFile(String filename) throws IOException, org.json.simple.parser.ParseException {
 		JSONParser parser = new JSONParser();
 		return (JSONObject) parser.parse(new String(Files.readAllBytes(Paths.get(filename))));

@@ -60,7 +60,8 @@ public class BaseTest {
     public void beforeSuite() throws Exception {
 
         if (capabilities == null) {
-            throw new Exception("No test capabilities found for the given maven test profile. Please define appropriate profile in pom.xml.");
+            throw new Exception(
+                    "No test capabilities found for the given maven test profile. Please define appropriate profile in pom.xml.");
         }
         synchronized (SYNCHRONIZER) {
             if (capabilities.getCapability("browserstack.local") != null && local == null) {

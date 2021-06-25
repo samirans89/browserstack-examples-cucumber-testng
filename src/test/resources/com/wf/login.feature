@@ -8,9 +8,9 @@ Feature: Login Feature
     And I press Log In Button
     Then I should see login error <message>
     Examples:
-      | username                 | password         | message |
-      | 'fav_user'               | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
-      | 'fav_user2'               | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
+      | username    | password    | message                                                                                                      |
+      | 'fav_user'  | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
+      | 'fav_user2' | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
 
   @login @qa @regression
   Scenario Outline: Login to app with incorrect creds
@@ -19,6 +19,6 @@ Feature: Login Feature
     And I press Log In Button
     Then I should see login error <message>
     Examples:
-      | username                 | password   | message |
-      | 'fav_user'                 | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
-      | 'fav_user2'               | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
+      | username    | password    | message                                                                                                      |
+      | 'fav_user'  | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |
+      | 'fav_user2' | 'testing99' | 'Please upgrade your app to the newest version. This version of the Wells Fargo App is no longer supported.' |

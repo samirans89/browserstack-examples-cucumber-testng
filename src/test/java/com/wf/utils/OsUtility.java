@@ -15,9 +15,7 @@ public class OsUtility {
     }
 
     public static boolean isUnix() {
-        return (getOsName().contains("nix")
-                || getOsName().contains("nux")
-                || getOsName().contains("aix"));
+        return (getOsName().contains("nix") || getOsName().contains("nux") || getOsName().contains("aix"));
     }
 
     public static boolean isMac() {

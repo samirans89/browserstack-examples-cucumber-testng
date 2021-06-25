@@ -19,12 +19,11 @@ public class GooglePlaySteps extends CommonSteps {
     String APP_SEARCH_ON_PLAYSTORE = "Wells Fargo Mobile";
     final static Logger logger = LoggerFactory.getLogger(GooglePlaySteps.class);
 
-
     @Given("I download app from Google Play Store")
     public void iDownloadAppFromPlayStore() {
 
         try {
-            
+
             switchToPlayStoreApp();
             skipOfferAdvertisements();
             searchAppOnPlayStore(APP_SEARCH_ON_PLAYSTORE);
@@ -46,7 +45,7 @@ public class GooglePlaySteps extends CommonSteps {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(openButtonPath)));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(openButtonPath)));
         adriver.findElementByXPath(openButtonPath).click();
-        
+
     }
 
     private void skipAccountSetup() {
@@ -62,7 +61,7 @@ public class GooglePlaySteps extends CommonSteps {
             logger.error(ex.getMessage());
             logger.debug("Continue element does not exist: " + ex.getMessage());
         }
-        
+
     }
 
     private void switchToPlayStoreApp() {
@@ -106,7 +105,7 @@ public class GooglePlaySteps extends CommonSteps {
         adriver.findElementByXPath(searchAppsText).sendKeys(appName);
         adriver.pressKey(new KeyEvent(AndroidKey.ENTER));
         adriver.findElementByXPath(searchButton).click();
-        
+
     }
 
     private void startApp(String appPackage, String appActivity) {
