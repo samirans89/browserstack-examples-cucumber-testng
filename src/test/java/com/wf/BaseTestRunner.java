@@ -13,9 +13,9 @@ import org.json.simple.JSONObject;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
 
 public class BaseTestRunner {
 
@@ -25,37 +25,17 @@ public class BaseTestRunner {
 
     final static Logger logger = LoggerFactory.getLogger(BaseTestRunner.class);
 
-    @Factory
-    @Parameters({ "test_config" })
-    public Object[] testFactory(@Optional("qa_functional") String testConfig) throws Exception {
+    @Factory(dataProvider = "getAllEnvCapabilities")
+    public Object[] testFactory(DesiredCapabilities capabilities) throws Exception {
 
-        Object[] testObjs = null;
-        try {
-
-            List<DesiredCapabilities> capabilitiesList = getAllEnvCapabilities(testConfig);
-            if (capabilitiesList.size() == 0) {
-                throw new Exception("No test capabilities found in " + DEVICE_CONFIG_FILE
-                        + " for the given test profile: " + testConfig);
-            }
-
-            testObjs = new Object[capabilitiesList.size()];
-            int count = 0;
-            for (DesiredCapabilities capabilities : capabilitiesList) {
-                testObjs[count] = new BaseTest(capabilities);
-                count++;
-            }
-
-        } catch (Exception e) {
-            logger.error("A runtime exception occurred while initializing TestNG factory: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
-
+        Object[] testObjs = new Object[] { new BaseTest(capabilities) };
         return testObjs;
     }
 
-    private List<DesiredCapabilities> getAllEnvCapabilities(String testConfig) throws Exception {
+    @DataProvider(name = "getAllEnvCapabilities", parallel = true)
+    private Object[][] getAllEnvCapabilities(ITestContext context) throws Exception {
 
+        String testConfig = System.getProperty("profileId");
         List<DesiredCapabilities> capabilitiesList = new ArrayList<DesiredCapabilities>();
 
         try {
@@ -70,7 +50,6 @@ public class BaseTestRunner {
                 for (Object env : envArr) {
                     DesiredCapabilities capabilities = new DesiredCapabilities();
                     capabilities.merge(new DesiredCapabilities(Utility.getCapabiltiesMapFromJSONObj(configFileJSONObj,
-                    
                             "tests", testConfig, "common_caps")));
 
                     Map<String, String> localCapabilities = Utility.getCapabiltiesMapFromJSONObj(configFileJSONObj,
@@ -102,6 +81,11 @@ public class BaseTestRunner {
             logger.error(e.getMessage());
         }
 
-        return capabilitiesList;
+        if (capabilitiesList.size() == 0) {
+            throw new Exception("No test capabilities found in " + DEVICE_CONFIG_FILE + " for the given test profile");
+        }
+
+        return capabilitiesList.stream().map(capabilities -> new Object[] { capabilities }).toArray(Object[][]::new);
+
     }
 }
