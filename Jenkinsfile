@@ -38,13 +38,13 @@ uat_critical''',
             ])
         ])
         stage('Pull from Github') {
-            def branch = 'main_app'
-            try {
-                def pull_request_data = new JsonSlurperClassic().parseText(env.data)
-                branch = pull_request_data.pull_request.head.ref
-            } catch(Exception ex) {
-                println("Triggered from Jenkins");
-            }
+            def branch = 'wf_app'
+            // try {
+            //     //def pull_request_data = new JsonSlurperClassic().parseText(env.data)
+            //     //branch = pull_request_data.pull_request.head.ref
+            // } catch(Exception ex) {
+            //     println("Triggered from Jenkins");
+            // }
             dir('test') {
                 git branch: "${branch}", changelog: false, poll: false, url: 'https://github.com/samirans89/browserstack-examples-cucumber-testng.git'
             }
@@ -61,7 +61,7 @@ uat_critical''',
                 withEnv(['BROWSERSTACK_USERNAME=' + user]) {
                     sh label: '', returnStatus: true, script: '''#!/bin/bash -l
                                                                 cd test
-                                                                mvn clean test -P ${TEST_TYPE}
+                                                                mvn clean test -P qa_regression
                                                                 '''
                 }
             }
