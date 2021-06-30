@@ -21,7 +21,7 @@ node {
                 ]
             ]),
             parameters([
-                credentials(credentialType: 'com.browserstack.automate.ci.jenkins.BrowserStackCredentials', defaultValue: '45d4ca9d-b349-4c13-8d94-bc81aedf4ac1', description: 'Select your BrowserStack Username', name: 'BROWSERSTACK_USERNAME', required: true),
+                credentials(credentialType: 'com.browserstack.automate.ci.jenkins.BrowserStackCredentials', defaultValue: 'samiran11', description: 'Select your BrowserStack Username', name: 'BROWSERSTACK_USERNAME', required: true),
                 [$class: 'ExtensibleChoiceParameterDefinition',
                 choiceListProvider: [
                     $class: 'TextareaChoiceListProvider',
