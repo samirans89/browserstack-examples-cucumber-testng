@@ -30,7 +30,7 @@ node {
 qa_regression
 qa_functional
 uat_critical''',
-                    defaultChoice: 'qa_functional'
+                    defaultChoice: 'qa_regression'
                 ],
                 description: 'Select the test you would like to run',
                 editable: false,
@@ -54,6 +54,9 @@ uat_critical''',
                 def user = "${env.BROWSERSTACK_USERNAME}"
                 if ( user.contains('-')) {
                     user = user.substring(0, user.lastIndexOf('-'))
+                }
+                if (!params.TEST_TYPE) {
+                    env.TEST_TYPE = "qa_regression"
                 }
                 withEnv(['BROWSERSTACK_USERNAME=' + user]) {
                     sh label: '', returnStatus: true, script: '''#!/bin/bash -l
